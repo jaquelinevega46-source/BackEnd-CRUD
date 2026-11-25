@@ -26,6 +26,11 @@ const usersCrud = sequelize.define('usersCrud', {
     allowNull: false,
     defaultValue: 'user',
   },
+  termsAcceptedAt:{
+    type: DataTypes.DATE,
+    allowNull: true,
+    defaultValue: null,
+    },
 }, {
   tableName: 'userscrud',
   timestamps: false,

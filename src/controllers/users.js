@@ -16,11 +16,18 @@ export const getUsers = async (_req, res) => {
 
 export const createUser = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, role, acceptTerms } = req.body;
 
     if (!name || !email || !password) {
       return res.status(400).json({
         error: "Todos los campos son obligatorios (name, email, password)",
+      });
+    }
+    const isAdminCreating = req.usuario?.role === "admin";
+
+    if(!isAdminCreating && acceptTerms !== true){
+      return res.status(400).json({
+        error: "No se han aceptado los terminos y condiciones",
       });
     }
 
