@@ -48,3 +48,27 @@ export async function sendWelcomeEmail(email, name) {
 
   return sendMail(email, subject, htmlContent);
 }
+
+export async function sendPaswordReserEmail(email, name, resetUrl){
+  const subject = "RECUPERAR CONTRASEÑA";
+  const htmlContent = `
+  <div style="font-family: Arial, sans-serif; background-color: #000033; padding: 20px; border-radius: 8px; color: #fff; text-aling: center;">
+    <h2 style="color: #ffcc80;">HOLA ${name},</h2>
+    <p style="font-size: 16px; color: #ffd54f;"> Restablecimiento de Contraseña</p>
+    <p style="font-size: 15px; color: #f5f5f5;">
+      SOLICITUD PARA RESTABLECER CONTRASEÑA.
+      ESTE ENLACE ES VALIDO POR <strong>30 MINUTOS</strong> Y SOLO PUEDE USARSE UNA VEZ.
+    </p>
+    <div style="margin: 25px 0;">
+      <a href="${resetUrl}" style="background-color: #007BFF; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">
+        RESTABLECER CONTRASEÑA
+      </a>
+    </div>
+    <p style="font-size: 13px; color: #cccccc;">
+    SI NO SOLICITASTE ESTE CAMBIO, IGNORA ESTE CORREO
+    </p>
+  </div>
+  `;
+
+  return sendMail(email, subject, htmlContent);
+}

@@ -31,6 +31,16 @@ const usersCrud = sequelize.define('usersCrud', {
     allowNull: true,
     defaultValue: null,
     },
+    resetToken: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: null,
+    },
+    resetTokenExpiresAt:{
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: null,
+    },
 }, {
   tableName: 'userscrud',
   timestamps: false,
