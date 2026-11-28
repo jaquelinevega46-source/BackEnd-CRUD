@@ -2,12 +2,33 @@ import usersCrud from "../models/users.js";
 import { encryptPassword } from "../utils/password.js";
 import { sendWelcomeEmail } from "../utils/sendEmail.js";
 
-export const getUsers = async (_req, res) => {
+export const getUsers = async (req, res) => {
   try {
-    const users = await usersCrud.findAll({
-      attributes: { exclude: ["password"] },
+    const page = Math.max(1, parseInt(req.query.page, 10) || 1);
+    const limit = Math.max(1, parseInt(req.query.limit, 10) || 10);
+    const offset = (page - 1) * limit;
+    const search = (req.query.search || "").trim();
+
+    const where = search ? {
+      [Op.or]: [
+        { name: { [Op.iLike]: `%${search}%` } },
+        { email: { [Op.iLike]: `%${search}%` } },
+      ],
+    } : {};
+
+    const { count, rows } = await usersCrud.findAndCountAll({
+      where,
+      atributes: { exclude: ["password"] },
+      limit,
+      offset,
+      order: [["id", "ASC"]],
     });
-    res.status(200).json(users);
+    res.status(200).json({
+      total: count,
+      page,
+      limit,
+      data: rows,
+    });
   } catch (error) {
     console.error("Error al obtener usuarios:", error);
     res.status(500).json({ error: "Error al obtener usuarios" });
